@@ -63,6 +63,12 @@ pipeline {
             }
         }
 
+        stage('Deploiement Nexus') {
+    steps {
+        bat 'mvn deploy -DskipTests'
+    }
+}
+
         /*
         stage('Deploy Nexus') {
             steps {
