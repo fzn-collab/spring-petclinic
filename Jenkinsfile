@@ -9,21 +9,15 @@ pipeline {
 
     stages {
 
-        stage('SCM') {
-            steps {
-                git 'https://github.com/fzn-collab/spring-petclinic.git'
-            }
-        }
-
         stage('Compilation') {
             steps {
-                sh 'mvn clean compile'
+                bat 'mvn clean compile'
             }
         }
 
         stage('Tests Unitaires') {
             steps {
-                sh 'mvn test'
+                bat 'mvn test'
             }
 
             post {
@@ -35,22 +29,23 @@ pipeline {
 
         stage('Couverture de Code') {
             steps {
-                sh 'mvn jacoco:report'
+                bat 'mvn jacoco:report'
             }
         }
 
         stage('Analyse Qualite') {
+
             parallel {
 
                 stage('Checkstyle') {
                     steps {
-                        sh 'mvn checkstyle:checkstyle'
+                        bat 'mvn checkstyle:checkstyle'
                     }
                 }
 
                 stage('PMD') {
                     steps {
-                        sh 'mvn pmd:pmd'
+                        bat 'mvn pmd:pmd'
                     }
                 }
             }
@@ -58,21 +53,23 @@ pipeline {
 
         stage('Documentation') {
             steps {
-                sh 'mvn site'
+                bat 'mvn site'
             }
         }
 
         stage('Packaging') {
             steps {
-                sh 'mvn package'
+                bat 'mvn package'
             }
         }
 
+        /*
         stage('Deploy Nexus') {
             steps {
-                sh 'mvn deploy'
+                bat 'mvn deploy'
             }
         }
+        */
     }
 
     post {
@@ -82,9 +79,7 @@ pipeline {
         }
 
         failure {
-            mail to: 'nokfatimazahra@gmail.com',
-            subject: 'ECHEC PIPELINE JENKINS',
-            body: 'Le build Jenkins a échoué'
+            echo 'Le build Jenkins a échoué'
         }
     }
 }
