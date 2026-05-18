@@ -78,14 +78,14 @@ pipeline {
         */
     }
 
-    post {
-
-        success {
-            echo 'Build réussi'
-        }
-
-        failure {
-            echo 'Le build Jenkins a échoué'
-        }
+   post {
+    failure {
+        mail to: 'nokfatimazahra@gmail.com',
+             subject: "ECHEC Pipeline - ${env.JOB_NAME}",
+             body: "Le build ${env.BUILD_NUMBER} a échoué."
     }
+    success {
+        echo 'Build réussi !'
+    }
+}
 }
