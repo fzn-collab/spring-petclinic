@@ -66,9 +66,10 @@ pipeline {
         }
 
         stage('Docker Build') {
-            steps {
-                bat 'docker build -t petclinic:latest .'
-            }
+    steps {
+        bat 'docker build -t %DOCKER_USER%/petclinic:latest .'
+    }
+}
         }
 
         stage('Docker Push') {
